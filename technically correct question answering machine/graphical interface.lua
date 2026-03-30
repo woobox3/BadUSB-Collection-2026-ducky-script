@@ -4,38 +4,38 @@ local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
 
--- Configuration
+-- config
 local ACTIVATION_PART = workspace:WaitForChild("Part")
 local chatbotActive = false
 local guiVisible = false
 
--- Keyword responses dictionary
+-- keyworh
 local responses = {
-    -- Greetings
+    -- greets
     ["hello"] = "Hey there! How can I help you today?",
     ["hi"] = "Hi! What's up?",
     ["hey"] = "Hey! 👋 What do you need?",
     ["goodbye"] = "See you later! Take care!",
     ["bye"] = "Catch you soon!",
     
-    -- How are you
+    -- beets
     ["how are you"] = "I'm doing great, thanks for asking! How about you?",
     ["how r u"] = "I'm good! How are you doing?",
     ["what's up"] = "Not much, just here to chat with you!",
     ["whats up"] = "Not much, just here to chat with you!",
     
-    -- Help & Questions
+    -- intergalatic space ship
     ["help"] = "I'm here to help! What do you need assistance with?",
     ["can you help"] = "Of course! Tell me what you need help with.",
     ["what can you do"] = "I can chat with you and answer questions! Just ask me anything.",
     ["how do i"] = "I'd be happy to help! Be more specific about what you need.",
     
-    -- Time & Date
+    -- yes that is an The Office refrence
     ["what time is it"] = "I'm not great with time, but you can check your device!",
     ["what's the time"] = "Check your clock! ⏰",
     ["what day is it"] = "I wish I could tell you, but I lose track of time!",
     
-    -- Mood & Feelings
+    -- moods n such
     ["i'm sad"] = "Aw, I'm sorry you're feeling down. Things will get better! 💙",
     ["im sad"] = "Aw, I'm sorry you're feeling down. Things will get better! 💙",
     ["i'm happy"] = "That's awesome! Keep smiling! 😊",
@@ -45,42 +45,42 @@ local responses = {
     ["i'm bored"] = "Why don't you play some games or chat with friends?",
     ["im bored"] = "Why don't you play some games or chat with friends?",
     
-    -- Random Questions
+    -- qa
     ["what's your name"] = "I'm a chatbot! You can name me whatever you like!",
     ["whats your name"] = "I'm a chatbot! You can name me whatever you like!",
     ["are you real"] = "I'm code in Roblox! Real enough to chat with you! 😄",
     ["do you like games"] = "Absolutely! That's why I'm here in Roblox!",
     ["tell me a joke"] = "Why did the programmer quit his job? Because he didn't get arrays! 😄",
     
-    -- Thanks & Politeness
+    -- tp
     ["thank you"] = "You're welcome! Always happy to help!",
     ["thanks"] = "No problem! Happy to assist!",
     ["please"] = "Of course! What do you need?",
     
-    -- Affirmations
+    -- Aaffr
     ["yes"] = "Great! What else?",
     ["no"] = "Understood! Anything else I can help with?",
     ["ok"] = "Awesome! Let me know if you need anything!",
     ["okay"] = "Awesome! Let me know if you need anything!",
     
-    -- Information
+    -- inf
     ["what is roblox"] = "Roblox is an amazing gaming platform where you can create and play games!",
     ["how does this work"] = "Press the Part, say something, then type in chat and I'll respond!",
     ["explain"] = "I respond to keywords! Try asking me common questions!",
 }
 
--- Create GUI
+-- graphical interface part
 local function createChatbotGUI()
     local player = Players.LocalPlayer
     local playerGui = player:WaitForChild("PlayerGui")
     
-    -- Main Frame
+    -- main frm
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = "ChatbotGui"
     screenGui.ResetOnSpawn = false
     screenGui.Parent = playerGui
     
-    -- Main Chat Window
+    -- main chat frame
     local chatFrame = Instance.new("Frame")
     chatFrame.Name = "ChatFrame"
     chatFrame.Size = UDim2.new(0, 400, 0, 500)
@@ -90,12 +90,12 @@ local function createChatbotGUI()
     chatFrame.Visible = false
     chatFrame.Parent = screenGui
     
-    -- Add corner radius
+    -- add radius
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 12)
     corner.Parent = chatFrame
     
-    -- Title Bar
+    -- title br
     local titleBar = Instance.new("Frame")
     titleBar.Name = "TitleBar"
     titleBar.Size = UDim2.new(1, 0, 0, 50)
@@ -136,7 +136,7 @@ local function createChatbotGUI()
     closeCorner.CornerRadius = UDim.new(0, 8)
     closeCorner.Parent = closeButton
     
-    -- Chat Display Area (ScrollingFrame)
+    -- chat displ
     local chatDisplay = Instance.new("ScrollingFrame")
     chatDisplay.Name = "ChatDisplay"
     chatDisplay.Size = UDim2.new(1, -20, 1, -120)
@@ -157,7 +157,7 @@ local function createChatbotGUI()
     listLayout.Padding = UDim.new(0, 8)
     listLayout.SortOrder = Enum.SortOrder.LayoutOrder
     
-    -- Input Frame
+    -- inpt
     local inputFrame = Instance.new("Frame")
     inputFrame.Name = "InputFrame"
     inputFrame.Size = UDim2.new(1, -20, 0, 50)
@@ -170,7 +170,7 @@ local function createChatbotGUI()
     inputCorner.CornerRadius = UDim.new(0, 8)
     inputCorner.Parent = inputFrame
     
-    -- Text Input Box
+    -- Txt
     local textInput = Instance.new("TextBox")
     textInput.Name = "TextInput"
     textInput.Size = UDim2.new(1, -50, 1, 0)
@@ -205,7 +205,7 @@ local function createChatbotGUI()
     sendCorner.CornerRadius = UDim.new(0, 6)
     sendCorner.Parent = sendButton
     
-    -- Function to add message to chat
+    -- function to add mssgs to chat
     local function addMessageToChat(sender, message, isBot)
         local messageContainer = Instance.new("Frame")
         messageContainer.Name = "MessageContainer"
@@ -233,7 +233,7 @@ local function createChatbotGUI()
         msgCorner.CornerRadius = UDim.new(0, 8)
         msgCorner.Parent = messageLabel
         
-        -- Resize container based on text
+        -- resize according to screen
         local textSize = game:GetService("TextService"):GetTextSize(messageLabel.Text, messageLabel.TextSize, messageLabel.Font, Vector2.new(messageLabel.AbsoluteSize.X - 20, math.huge))
         messageContainer.Size = UDim2.new(1, -10, 0, textSize.Y + 20)
         messageLabel.Size = UDim2.new(1, -10, 1, 0)
@@ -242,7 +242,7 @@ local function createChatbotGUI()
         chatDisplay.CanvasPosition = Vector2.new(0, listLayout.AbsoluteContentSize.Y)
     end
     
-    -- Function to find matching keyword
+    -- function
     local function findKeyword(message)
         local lowerMessage = string.lower(message)
         
@@ -255,7 +255,7 @@ local function createChatbotGUI()
         return "I'm not sure about that, but it sounds interesting! Can you tell me more?"
     end
     
-    -- Send button functionality
+    -- button 
     local function sendMessage()
         local userMessage = textInput.Text:gsub("^%s+|%s+$", "")
         
@@ -263,7 +263,7 @@ local function createChatbotGUI()
             addMessageToChat("You", userMessage, false)
             textInput.Text = ""
             
-            -- Get bot response
+            -- bot respns
             local botResponse = findKeyword(userMessage)
             task.wait(0.5) -- Simulate typing delay
             addMessageToChat("Chatbot", botResponse, true)
@@ -277,7 +277,7 @@ local function createChatbotGUI()
         end
     end)
     
-    -- Close button functionality
+    -- close button func
     closeButton.MouseButton1Click:Connect(function()
         chatFrame.Visible = false
         guiVisible = false
@@ -286,10 +286,10 @@ local function createChatbotGUI()
     return chatFrame
 end
 
--- Reference to GUI
+-- refrence to gui
 local chatGui = nil
 
--- Click detection for the part
+-- clic dectetion
 ACTIVATION_PART.MouseClick:Connect(function(player)
     if player == Players.LocalPlayer then
         chatbotActive = not chatbotActive
